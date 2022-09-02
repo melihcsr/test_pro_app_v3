@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:test_pro_app_v3/pages/name_page.dart';
+import 'package:test_pro_app_v3/pages/register_steps_page.dart';
 import 'package:test_pro_app_v3/pages/sign_up_page.dart';
+import 'package:test_pro_app_v3/provider/google_sign_in.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -36,17 +40,15 @@ class _LandingPageState extends State<LandingPage> {
             ),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50.0),
+              padding: EdgeInsets.symmetric(horizontal: 50.0),
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   )),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUpPage()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => NamePage()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -78,9 +80,14 @@ class _LandingPageState extends State<LandingPage> {
                         primary: Colors.white,
                         onPrimary: Colors.black,
                         minimumSize: Size(double.infinity, 40)),
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.abc,
+                    onPressed: () {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.googleLogin();
+                    },
+                    icon: FaIcon(
+                      FontAwesomeIcons.google,
                       color: Colors.red,
                     ),
                     label: const Text("Continue with Google"))),
