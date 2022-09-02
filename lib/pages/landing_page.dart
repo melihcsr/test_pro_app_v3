@@ -48,7 +48,7 @@ class _LandingPageState extends State<LandingPage> {
                   )),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => NamePage()));
+                        MaterialPageRoute(builder: (context) => SignUpPage()));
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),

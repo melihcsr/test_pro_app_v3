@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:test_pro_app_v3/pages/name_page.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -214,7 +216,41 @@ class _SignUpPageState extends State<SignUpPage> {
                                   primary:
                                       const Color.fromARGB(255, 49, 68, 159),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (registerPasswordController.text ==
+                                      reWriteRegisterPasswordController.text) {
+                                    FirebaseAuth.instance
+                                        .createUserWithEmailAndPassword(
+                                            email: registerEmailController.text,
+                                            password:
+                                                registerPasswordController.text)
+                                        .then((value) => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const NamePage())));
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              "GİRİLEN 2 ŞİFRE EŞLEŞMİYOR"),
+                                          content: const Text(
+                                              "Lütfen girdiğiniz şifrelerin eşleşmesini kontrol ediniz"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text("OK"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
                                 child: const Center(
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
@@ -291,7 +327,64 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: ElevatedButton.styleFrom(
                               primary: const Color.fromARGB(255, 49, 68, 159),
                             ),
-                            onPressed: () async {},
+                            onPressed: () async {
+                              try {
+                                final credential = await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                  email: loginEmailController.text,
+                                  password: loginPasswordController.text,
+                                );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NamePage()));
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'user-not-found') {
+                                  print('No user found for that email.');
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title:
+                                            const Text("E-MAİL KAYITLI DEGİL"),
+                                        content: const Text(
+                                            "Lütfen girdiğiniz e-mail bilginizi kontrol ediniz."),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } else if (e.code == 'wrong-password') {
+                                  print(
+                                      'Wrong password provided for that user.');
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title:
+                                            const Text("GİRİLEN ŞİFRE YANLIŞ"),
+                                        content: const Text(
+                                            "Lütfen girdiğiniz şifreyi kontrol ediniz."),
+                                        actions: <Widget>[
+                                          FlatButton(
+                                            child: Text("OK"),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+                            },
                             child: const Center(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
