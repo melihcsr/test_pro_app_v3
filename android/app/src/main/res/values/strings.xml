@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="app_name">crewin App</string>
+   <string name="facebook_app_id">432085458899505</string>
+   <string name="fb_login_protocol_scheme">fb432085458899505</string>
+   <string name="facebook_client_token">1cbae1014aac0aeedad84b90dfd1aafe</string>
+</resources>   
+   

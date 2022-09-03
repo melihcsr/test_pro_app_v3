@@ -175,7 +175,7 @@ class _RegisterStepsPageState extends State<RegisterStepsPage> {
                   ),
                   onPressed: () {
                     controller.nextPage(
-                        duration: Duration(milliseconds: 1000),
+                        duration: Duration(milliseconds: 700),
                         curve: Curves.easeInCubic);
                   },
                   child: const Center(

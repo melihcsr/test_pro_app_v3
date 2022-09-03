@@ -239,7 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                           content: const Text(
                                               "Lütfen girdiğiniz şifrelerin eşleşmesini kontrol ediniz"),
                                           actions: <Widget>[
-                                            FlatButton(
+                                            ElevatedButton(
                                               child: Text("OK"),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
@@ -350,7 +350,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         content: const Text(
                                             "Lütfen girdiğiniz e-mail bilginizi kontrol ediniz."),
                                         actions: <Widget>[
-                                          FlatButton(
+                                          ElevatedButton(
                                             child: Text("OK"),
                                             onPressed: () {
                                               Navigator.of(context).pop();
@@ -372,7 +372,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         content: const Text(
                                             "Lütfen girdiğiniz şifreyi kontrol ediniz."),
                                         actions: <Widget>[
-                                          FlatButton(
+                                          ElevatedButton(
                                             child: Text("OK"),
                                             onPressed: () {
                                               Navigator.of(context).pop();

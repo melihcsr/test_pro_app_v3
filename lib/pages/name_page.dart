@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:test_pro_app_v3/pages/landing_page.dart';
 import 'package:test_pro_app_v3/pages/register_steps_page.dart';
 
 class NamePage extends StatefulWidget {
@@ -27,7 +28,10 @@ class _NamePageState extends State<NamePage> {
               IconButton(
                   iconSize: 30,
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LandingPage()));
                   },
                   icon: const Icon(Icons.arrow_back)),
               const SizedBox(height: 200),

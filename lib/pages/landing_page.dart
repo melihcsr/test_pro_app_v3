@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+
 import 'package:test_pro_app_v3/pages/name_page.dart';
 import 'package:test_pro_app_v3/pages/register_steps_page.dart';
 import 'package:test_pro_app_v3/pages/sign_up_page.dart';
@@ -16,6 +19,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
+  Map? _userData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +103,9 @@ class _LandingPageState extends State<LandingPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       )),
-                  onPressed: () {},
+                  onPressed: () async {
+                    facebookSignin();
+                  },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Row(
@@ -121,7 +127,12 @@ class _LandingPageState extends State<LandingPage> {
             ),
             const SizedBox(height: 30),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NamePage()));
+                },
                 child: const Text(
                   "Continue without signing up",
                   style: TextStyle(fontSize: 16),
@@ -130,5 +141,35 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
     );
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<String?> facebookSignin() async {
+    try {
+      final _instance = FacebookAuth.instance;
+      final result = await _instance.login(
+        permissions: ['email', 'public_profile'],
+      );
+      if (result.status == LoginStatus.success) {
+        debugPrint("İşlem Başarılı");
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
+        final a = await _auth.signInWithCredential(credential);
+        await _instance.getUserData().then((userData) async {
+          await _auth.currentUser!.updateEmail(userData['email']);
+        });
+        return null;
+      } else if (result.status == LoginStatus.cancelled) {
+        debugPrint("Login cancelled");
+        return 'Login cancelled';
+      } else {
+        return 'Error';
+      }
+    } catch (e) {
+      debugPrint("Hata Yakalandı");
+      debugPrint(e.toString());
+      return e.toString();
+    }
   }
 }
